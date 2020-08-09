@@ -7,6 +7,9 @@
 
 (function() {
 
+    var state = 0;
+    var colorModeRefresh = 20;
+    var mode = "";
     var _onload = function() {
 
         var canvastag = document.getElementById('canvasdonut');
@@ -16,8 +19,6 @@
 
         var intervalInMilli = 50;
 
-        var colorMode = 0;
-        var colorModeRefresh = 100;
         var colorTimerCount = 0;
  
         var red = 0;
@@ -36,6 +37,24 @@
         var K2 = 5;//5, controls..?
         var dotSize = ctx0.canvas.width * 0.015;
 
+        var setState = function(){
+            switch(state){
+                case 0:
+                    state = 1; colorModeRefresh = 200; colorTimerCount = 0;
+                    mode = "C L A S S I C S L O W" ; break;
+                case 1: 
+                    state = 2; colorModeRefresh = 1; colorTimerCount = 0;
+                    mode = "P A R T Y" ; break;
+                case 2: 
+                    state = 3;  colorModeRefresh = 50; colorTimerCount = 0;
+                    mode = "C L A S S I C F A S T" ; break;
+                case 3: 
+                    state = 0; colorModeRefresh = 4; colorTimerCount = 0;
+                    mode = "S T R O B E" ; break;
+                default: return;
+            }
+            document.getElementById("mode").innerHTML = mode;
+        }
 
         var colorSwipe = function() {
             switch(colorState) {
@@ -54,7 +73,6 @@
 
         // This is a reimplementation according to my math derivation on the page https://www.a1k0n.net/2011/07/20/donut-math.html
         var canvasframe=function() {
-            
             var ctx = canvastag.getContext('2d');
             ctx.fillStyle='#000';
             ctx.fillRect(0, 0, canW, canW); //square canvas
@@ -92,14 +110,16 @@
                 }
             }
         }
-        //original
+
         window.anim1 = function() {
+            setState();
             if(tmr2 === undefined) {
-            tmr2 = setInterval(canvasframe, intervalInMilli);
-            } 
+                tmr2 = setInterval(canvasframe, intervalInMilli);
+            }
             else {
                 clearInterval(tmr2);
                 tmr2 = undefined;
+                tmr2 = setInterval(canvasframe, intervalInMilli);
             }
         };
         
