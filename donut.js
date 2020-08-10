@@ -27,6 +27,11 @@
         var colorState = 0;
 
         var sizeDelta = 0.5;
+        var sizeState = 0;
+        var sizeTimerCount = 0;
+
+        var shinnyState = 0;
+        var shadowState = 0;
 
         var ctx0 = canvastag.getContext('2d');
         var canW = ctx0.canvas.width; //one side only, square canvas
@@ -71,8 +76,52 @@
             }
         }
 
+        //This works, but I wanted to make the grow/shrink
+        //interval based on sizeDelta hitting 0.6 and 0.4
+        //so I could change growth as percentage of canvas width
+        //not on sizeTimerCount, but this still works.
+        //Adjust growth by increase/decrease sizeTimerCount
+        var sizeSwipe = function(){
+            switch(sizeState){
+                case 0:
+                    sizeDelta -= 0.01;
+                    sizeTimerCount ++;
+                    K1 = canW * sizeDelta;
+                    if (sizeTimerCount == 20) { sizeState = 1; sizeTimerCount = 0; }
+                    break;
+                case 1:
+                    sizeDelta += 0.01;
+                    sizeTimerCount ++;
+                    K1 = canW * sizeDelta;
+                    if (sizeTimerCount == 20) { sizeState = 0; sizeTimerCount = 0; }
+                    break;
+                default: return;
+            }
+        }
+
+        shinny = function(){
+            switch(shinnyState){
+                case 0:
+                    shinnyState = 1; break;
+                case 1:
+                    shinnyState = 0; break;
+                default: return;
+            }
+        }
+
+        shadow = function(){
+            switch(shadowState){
+                case 0:
+                    shadowState = 1; break;
+                case 1:
+                    shadowState = 0; break;
+                default: return;
+            }
+        }
+
         // This is a reimplementation according to my math derivation on the page https://www.a1k0n.net/2011/07/20/donut-math.html
         var canvasframe=function() {
+            sizeSwipe();
             var ctx = canvastag.getContext('2d');
             ctx.fillStyle='#000';
             ctx.fillRect(0, 0, canW, canW); //square canvas
@@ -89,7 +138,6 @@
                     var sp=Math.sin(i),cp=Math.cos(i); // cosine phi, sine phi
                     var ox = R2 + R1*ct, // object x, y = (R2,0,0) + (R1 cos theta, R1 sin theta, 0)
                         oy = R1*st;
-    
                     var x = ox*(cB*cp + sA*sB*sp) - oy*cA*sB; // final 3D x coordinate
                     var y = ox*(sB*cp - sA*cB*sp) + oy*cA*cB; // final 3D y
                     var ooz = 1/(K2 + cA*ox*sp + sA*oy); // one over z
@@ -104,8 +152,22 @@
                         colorTimerCount = 0;
                     }
                     if(L > 0) {
-                        ctx.fillStyle = 'rgba('+red+','+green+','+blue+','+L+')';
-                        ctx.fillRect(xp, yp, dotSize, dotSize);
+                        if(shadowState == 1){
+                            if(L > 0.6){
+                                ctx.fillStyle = 'rgba(255,255,255,1)';
+                                ctx.fillRect(xp, yp, dotSize, dotSize);
+                            }
+                        }
+                        else{
+                            if(L > 0.75 && shinnyState == 1 ){
+                                ctx.fillStyle = 'rgba(255,255,255,1)';
+                                ctx.fillRect(xp, yp, dotSize, dotSize);
+                            }
+                            else{
+                                ctx.fillStyle = 'rgba('+red+','+green+','+blue+','+L+')';
+                                ctx.fillRect(xp, yp, dotSize, dotSize);
+                            }
+                        }
                     }
                 }
             }
@@ -120,6 +182,18 @@
                 clearInterval(tmr2);
                 tmr2 = undefined;
                 tmr2 = setInterval(canvasframe, intervalInMilli);
+            }
+        };
+
+        window.pause = function(){
+            if (tmr2){
+                clearInterval(tmr2);
+                tmr2 = undefined;
+                document.getElementById("pause").innerHTML = "P L A Y"
+            }
+            else{
+                tmr2 = setInterval(canvasframe, intervalInMilli);
+                document.getElementById("pause").innerHTML = "P A U S E"
             }
         };
         
