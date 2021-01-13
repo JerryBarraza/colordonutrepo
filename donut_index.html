@@ -1,0 +1,38 @@
+<html>
+<!-- //Original spinning donut.js code and maths by Andy Sloane, a1k0n.net
+//https://www.a1k0n.net/2011/07/20/donut-math.html
+//
+//I just added the changing color modes and minor effects. -J wave.s
+//8.6.2020 -->
+    <head>
+        <style>
+            body {
+                 background-color: black;
+            }
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            p {
+                color: white;
+                text-align: center;
+                font-family: Verdana, sans-serif;
+                font-weight: lighter;
+                font-size: large;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvasdonut" width="800" height="800" class="center" onclick="anim1();">
+        </canvas>
+            <p id="mode">T O U C H - T O - C Y C L E</p>
+            <br>
+            <p id="pause"onclick="pause();">P A U S E</p>
+            <br>
+            <p onclick="shinny();">S H I N N Y</p>
+            <br>
+            <p onclick="shadow();">S H A D O W</p>
+    <body>
+    <script src="donut.js"></script>
+</html>
