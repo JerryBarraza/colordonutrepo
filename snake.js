@@ -94,3 +94,16 @@ function keyPush(evt) {
 			break;
 	}
 }
+
+function up(){
+	xv=0;yv=-1;
+}
+function left(){
+	xv=-1;yv=0;
+}
+function right(){
+	xv=1;yv=0;
+}
+function down(){
+	xv=0;yv=1;
+}
