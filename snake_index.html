@@ -1,0 +1,71 @@
+<html>
+<!--
+//
+-->
+    <head>
+        <style>
+            body {
+                 background-color: black;
+            }
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+				text-align: center;
+            }
+            p, a{
+                color: white;
+                font-family: Verdana, sans-serif;
+                font-weight: lighter;
+                font-size: large;
+            }
+			#gc {
+				border: 1px solid;
+				border-color: white;
+				border-radius: 8px;
+			}
+			.arrow{
+				max-width: 50;
+				border: 1px solid;
+				border-color: lime;
+				border-radius: 8px;
+			}
+			.Row {
+				display: table;
+				margin: auto;
+			}
+			.Column {
+				display: table-cell;
+			}
+			.score{
+				padding-left: 10px;
+			}
+			.rightButton{
+				padding-left: 20px;
+			}
+        </style>
+    </head>
+    <body>
+		<a href="index.html">back</a>
+		<canvas id="gc" width="400" height="400" class="center"></canvas>
+		<div class="Row">
+			<div class="Column"><p class="center">(zoom in for better mobile view) Score:</p></div>
+			<div class="Column score"><p id="sc" class="center"></p></div>
+		</div>
+		<div onclick="up();">
+			<p class="arrow center">up</p>
+		</div>
+		<div class="Row">
+			<div class="Column" onclick="left();">
+				<p class="arrow left-right center">left</p>
+			</div>
+			<div class="Column rightButton" onclick="right();">
+				<p class="arrow left-right center">right</p>
+			</div>
+		</div>
+		<div onclick="down();">
+			<p class="arrow center">down</p>
+		</div>
+    <body>
+    <script src="snake.js"></script>
+</html>

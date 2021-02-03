@@ -1,3 +1,5 @@
+//Original code for snake game from Chris DeLeon of HomeTeam GameDev.
+//I just added color and stlying and put some buttons (^-^)
 window.onload=function() {
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
@@ -93,4 +95,17 @@ function keyPush(evt) {
 			xv=0;yv=1;
 			break;
 	}
+}
+
+function up(){
+	xv=0;yv=-1;
+}
+function left(){
+	xv=-1;yv=0;
+}
+function right(){
+	xv=1;yv=0;
+}
+function down(){
+	xv=0;yv=1;
 }
