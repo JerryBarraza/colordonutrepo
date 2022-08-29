@@ -94,13 +94,13 @@ function checkWin(){
     console.log("peg total:" + pegtotal);
     let stillHasMovesLeftState = stillHasMovesLeft();
     if(!stillHasMovesLeftState && pegtotal == 1){
-        gameMessage = "you win";
+        gameMessage = "you win! yay! :)";
     }
     else if(!stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "you lose!";
+        gameMessage = "you lost, loser! :(";
     }
     else if(stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "no win..yet";
+        gameMessage = "no win...yet";
     }
     else{
         gameMessage = "test test test unsure..";
