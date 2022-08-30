@@ -90,20 +90,30 @@ function updateBoard(){
     pegtotal -= 1;
 }
 
+function updateBoardSelection(){
+    tempValue = board[sourcePeg-1];
+    board[sourcePeg-1] = 2;
+    return tempValue;
+}
+
+function updateBoardUnSelection(tv){
+    board[sourcePeg-1] = tv;
+}
+
 function checkWin(){
     console.log("peg total:" + pegtotal);
     let stillHasMovesLeftState = stillHasMovesLeft();
     if(!stillHasMovesLeftState && pegtotal == 1){
-        gameMessage = "you win! yay! :)";
+        gameMessage = "You Win :) Merry Xmas!";
     }
     else if(!stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "you lost, loser! :(";
+        gameMessage = "You lost :( try again.";
     }
     else if(stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "no win...yet";
+        gameMessage = "No win... yet";
     }
     else{
-        gameMessage = "test test test unsure..";
+        gameMessage = "Test test test unsure...";
     }
 }
 
@@ -184,10 +194,12 @@ canvas.addEventListener('mousedown', function(event){
     switch(gameState){
         case 0:
             sourcePeg = whichPegClicked(mouse.x, mouse.y);
+            tempSourcePeg = updateBoardSelection();
             gameState = 1;
             break;
         case 1:
             destPeg = whichPegClicked(mouse.x, mouse.y);
+            updateBoardUnSelection(tempSourcePeg);
             gameState = 2;
             break;
         default:
@@ -224,7 +236,7 @@ function drawTriangle(TipX, TipY, TriH, state){
         ctx.strokeStyle = 'red';
     }
     else if(state == 2){
-        ctx.strokeStyle = 'blue'
+        ctx.strokeStyle = 'rgb(180, 0, 0)'
     }
     else {
         ctx.strokeStyle = 'green';
@@ -376,7 +388,7 @@ let pegtotal = 14; // starting number of pegs
 let gameState = 0;
 
 let gameFont = ctx.font = "20px Arial";
-let gameMessage = "welcome!";
+let gameMessage = "Welcome!";
 
 //--------------------------------- Set up new game
 ctx.clearRect(0,0,canW, canH);
