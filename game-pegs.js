@@ -109,16 +109,16 @@ function checkWin(){
     console.log("peg total:" + pegtotal);
     let stillHasMovesLeftState = stillHasMovesLeft();
     if(!stillHasMovesLeftState && pegtotal == 1){
-        gameMessage = "you win";
+        gameMessage = "You Win :) Merry X-Mas!";
     }
     else if(!stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "you lose!";
+        gameMessage = "You Lose :( Try again?";
     }
     else if(stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "no win..yet";
+        gameMessage = "No win... yet.";
     }
     else{
-        gameMessage = "test test test unsure..";
+        gameMessage = "Error? Lol.";
     }
 }
 
@@ -426,7 +426,7 @@ let gameState = 0;
 let tempValue = -1;
 
 let gameFont = ctx.font = "20px Arial";
-let gameMessage = "welcome!";
+let gameMessage = "Welcome! Will you play? :)";
 
 //--------------------------------- Set up new game
 ctx.clearRect(0,0,canW, canH);
