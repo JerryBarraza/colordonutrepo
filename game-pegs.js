@@ -92,28 +92,33 @@ function updateBoard(){
 
 function updateBoardSelection(){
     tempValue = board[sourcePeg-1];
-    board[sourcePeg-1] = 2;
-    return tempValue;
+    if (tempValue == 0){
+        board[sourcePeg-1] = 0.5;
+    }
+    if (tempValue == 1){
+        board[sourcePeg-1] = 1.5;
+    }
+    //board[sourcePeg-1] = 2;
 }
 
-function updateBoardUnSelection(tv){
-    board[sourcePeg-1] = tv;
+function updateBoardUnSelection(){
+    board[sourcePeg-1] = tempValue;
 }
 
 function checkWin(){
     console.log("peg total:" + pegtotal);
     let stillHasMovesLeftState = stillHasMovesLeft();
     if(!stillHasMovesLeftState && pegtotal == 1){
-        gameMessage = "You Win :) Merry Xmas!";
+        gameMessage = "you win";
     }
     else if(!stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "You lost :( try again.";
+        gameMessage = "you lose!";
     }
     else if(stillHasMovesLeftState && pegtotal > 1){
-        gameMessage = "No win... yet";
+        gameMessage = "no win..yet";
     }
     else{
-        gameMessage = "Test test test unsure...";
+        gameMessage = "test test test unsure..";
     }
 }
 
@@ -194,12 +199,12 @@ canvas.addEventListener('mousedown', function(event){
     switch(gameState){
         case 0:
             sourcePeg = whichPegClicked(mouse.x, mouse.y);
-            tempSourcePeg = updateBoardSelection();
+            updateBoardSelection();
             gameState = 1;
             break;
         case 1:
             destPeg = whichPegClicked(mouse.x, mouse.y);
-            updateBoardUnSelection(tempSourcePeg);
+            updateBoardUnSelection();
             gameState = 2;
             break;
         default:
@@ -232,23 +237,55 @@ function getInputValue(){
 function drawTriangle(TipX, TipY, TriH, state){
     let growX = 0;
     ctx.beginPath();
-    if(state == 1){
-        ctx.strokeStyle = 'red';
-    }
-    else if(state == 2){
-        ctx.strokeStyle = 'rgb(180, 0, 0)'
-    }
-    else {
+    ctx.lineWidth = 1;
+    if(state == 0){
         ctx.strokeStyle = 'green';
     }
+    else if(state == 0.5){
+        ctx.strokeStyle = 'green';
+    }
+    else if(state == 1){
+        ctx.strokeStyle = 'rgb(180, 0, 0)';
+    }
+    else if(state == 1.5){
+        ctx.strokeStyle = 'rgb(180, 0, 0)';
+    }
+    else {
+        ctx.strokeStyle = 'black';
+    }
     for(let i = 0; i < TriH; i++){
-        if(i % 2 == 0){ // if this changes, need to change treeBranchH and Hh since they relly its a 1:2 ratio.
+        if(i % 2 == 0){ // if this changes, need to change treeBranchH and Hh since its a 1:2 ratio.
             growX ++;
         }
         ctx.moveTo(TipX-growX, TipY+i);
         ctx.lineTo(TipX+growX, TipY+i);
         ctx.stroke();
     }
+    ctx.closePath();
+    if(state == 0.5 || state == 1.5){
+        drawTriangleOutline(TipX, TipY, TriH, state);
+    }
+}
+
+function drawTriangleOutline(TipX, TipY, TriH, state){
+    ctx.beginPath();
+    if(state == 0.5){
+        ctx.strokeStyle = 'rgb(50, 50, 0)'
+    }
+    else if(state == 1.5){
+        ctx.strokeStyle = 'rgb(225, 215, 0)'
+    }
+    else{
+        ctx.strokeStyle = 'black';
+    }
+    ctx.lineWidth = 4;
+    ctx.moveTo(TipX, TipY);
+    ctx.lineTo(TipX-(TriH/2), TipY+TriH);
+    ctx.stroke();
+    ctx.lineTo(TipX+(TriH/2), TipY+TriH);
+    ctx.stroke();
+    ctx.lineTo(TipX, TipY);
+    ctx.stroke();
     ctx.closePath();
 }
 
@@ -386,9 +423,10 @@ let inputEntered = false;
 let pathpeg = -1;
 let pegtotal = 14; // starting number of pegs
 let gameState = 0;
+let tempValue = -1;
 
 let gameFont = ctx.font = "20px Arial";
-let gameMessage = "Welcome!";
+let gameMessage = "welcome!";
 
 //--------------------------------- Set up new game
 ctx.clearRect(0,0,canW, canH);
